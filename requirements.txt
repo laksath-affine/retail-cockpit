@@ -1,0 +1,7 @@
+pandas
+sqlalchemy
+urllib3
+streamlit
+streamlit-toggle
+schedule
+random2

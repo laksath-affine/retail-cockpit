@@ -1,0 +1,85 @@
+CREATE TABLE [DATA-NEW-BM] (
+    [STORECODE] INT NOT NULL,
+    [GRP] VARCHAR(255) NOT NULL,
+    [WEEK_NUMBER] INT NOT NULL,
+    [PRICE] DECIMAL(10, 2) NOT NULL,
+    [QTY] INT NOT NULL,
+    [VALUE] DECIMAL(10, 2) NOT NULL,
+    [DISCOUNT] DECIMAL(10, 2) NOT NULL,
+    [IS_PROMOTED] BIT NOT NULL,
+    [INVENTORY] INT NOT NULL,
+    [FOOTFALL] INT NOT NULL,
+    [GROSSMARGIN] DECIMAL(10, 2) NOT NULL,
+    [Date] DATE NOT NULL
+);
+
+
+CREATE TABLE [AGGREGATIONS-MAIN] (
+    [store_code] INT,
+    [WEEK_NUMBER] INT,
+    [time_range] VARCHAR(50),
+    [Store score (Main KPIs)] INT,
+    [Sales (Main KPIs)] DECIMAL(18, 2),
+    [Footfall (Main KPIs)] INT,
+    [Utilization (Main KPIs)] DECIMAL(18, 2),
+    [Gross Margin (Main KPIs)] DECIMAL(18, 2),
+    [Daily Sales (Current value)] DECIMAL(18, 2),
+    [Coupon Driven Sales (%) (Current value)] DECIMAL(18, 2),
+    [Average Basket Size (ABS) (Current value)] DECIMAL(18, 2),
+    [Ecommerce fulfilment (%) (Current value)] DECIMAL(18, 2),
+    [Daily Sales (Gap. vs forecast)] DECIMAL(18, 2),
+    [Coupon Driven Sales (%) (Gap. vs forecast)] DECIMAL(18, 2),
+    [Ecommerce fulfilment (%) (Gap. vs forecast)] DECIMAL(18, 2),
+    [Average Basket Size (ABS) (Gap. vs forecast)] DECIMAL(18, 2),
+    [Daily Sales (WoW (%))] DECIMAL(18, 2),
+    [Coupon Driven Sales (%) (WoW (%))] DECIMAL(18, 2),
+    [Ecommerce fulfilment (%) (WoW (%))] DECIMAL(18, 2),
+    [Average Basket Size (ABS) (WoW (%))] DECIMAL(18, 2),
+    [Daily Sales (MoM (%))] DECIMAL(18, 2),
+    [Coupon Driven Sales (%) (MoM (%))] DECIMAL(18, 2),
+    [Ecommerce fulfilment (%) (MoM (%))] DECIMAL(18, 2),
+    [Average Basket Size (ABS) (MoM (%))] DECIMAL(18, 2),
+    [Daily Sales (YoY (%))] DECIMAL(18, 2),
+    [Coupon Driven Sales (%) (YoY (%))] DECIMAL(18, 2),
+    [Ecommerce fulfilment (%) (YoY (%))] DECIMAL(18, 2),
+    [Average Basket Size (ABS) (YoY (%))] DECIMAL(18, 2),
+    [current_value_bm_target] DECIMAL(18, 2),
+    [total_inventory_bm_target] INT,
+    [footfall_sum_bm_target] INT,
+    [gross_margin_mean_bm_target] DECIMAL(18, 2),
+    [store_score_target] INT,
+    [metric_observations] TEXT,
+    [recommended_actions] TEXT,
+    [from_the_dashboard] TEXT,
+    [from_benchmarking] TEXT,
+    [from_predictions_and_scenario_engine] TEXT,
+    [weekly_sales] DECIMAL(18, 2),
+    [total_buyers] INT,
+    [CSAT] DECIMAL(18, 2),
+    [unsold_inventory] INT,
+    [return_rate] DECIMAL(18, 2),
+    [staff_turnover_rate] DECIMAL(18, 2),
+    [theft_incident_rate] DECIMAL(18, 2),
+    [weekly_sales_11] DECIMAL(18, 2),
+    [total_buyers_11] INT,
+    [CSAT_11] DECIMAL(18, 2),
+    [unsold_inventory_11] INT,
+    [return_rate_11] DECIMAL(18, 2),
+    [staff_turnover_rate_11] DECIMAL(18, 2),
+    [theft_incident_rate_11] DECIMAL(18, 2),
+    [average_basket_size_11] DECIMAL(18, 2),
+    [Date] DATE
+);
+
+
+ALTER TABLE [DATA-NEW-BM]
+ADD [MasterId] INT NOT NULL;
+
+
+ALTER TABLE [AGGREGATIONS-MAIN]
+ADD [MasterId] INT NOT NULL;
+
+
+DELETE FROM [dbo].[AnomalyDetectionBase];
+DELETE FROM [dbo].[DATA-NEW-BM];
+DELETE FROM [dbo].[AGGREGATIONS-MAIN];
