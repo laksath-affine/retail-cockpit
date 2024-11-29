@@ -1,7 +1,6 @@
 pandas
 sqlalchemy
 urllib3
-streamlit
-streamlit-toggle
+streamlit-toggle-switch==1.0.2
 schedule
 random2
