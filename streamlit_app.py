@@ -30,6 +30,7 @@ def manage_scheduler():
     """Start or stop the scheduler based on the toggle state."""
     if st.session_state["toggle_status"]:
         start_scheduler()
+        preview_dataframe(st.session_state['scheduler_output_df'], None)
     else:
         stop_scheduler()
         
