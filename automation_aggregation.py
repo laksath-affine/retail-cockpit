@@ -13,7 +13,7 @@ password = st.secrets["database"]["password"]
 
 
 params = urllib.parse.quote_plus(
-    f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+    f"DRIVER={{ODBC Driver 17 for SQL Server}};"
     f"SERVER=tcp:{server},1433;"
     f"DATABASE={database};"
     f"UID={username};"
