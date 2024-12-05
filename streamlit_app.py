@@ -3,6 +3,7 @@ from streamlit_toggle import st_toggle_switch
 from scheduler import start_scheduler, stop_scheduler
 from automation_aggregation import add_sales_data, fetch_latest_date
 import pandas as pd
+from datetime import datetime, timedelta
 
 def initialize_session_state():
     """Initialize the session state variables."""
@@ -30,7 +31,7 @@ def manage_scheduler():
     """Start or stop the scheduler based on the toggle state."""
     if st.session_state["toggle_status"]:
         start_scheduler()
-        preview_dataframe(st.session_state['scheduler_output_df'], None)
+        preview_dataframe(st.session_state['scheduler_output_df'], "Processed Data Preview", None)
     else:
         stop_scheduler()
         
@@ -38,8 +39,14 @@ def manage_scheduler():
 def show_scheduler_status():
     """Display the current status of the scheduler."""
     if st.session_state["toggle_status"]:
-        st.success("Scheduler is currently running.")
-        show_spinner()
+        current_time = datetime.now()
+
+        # Add 24 hours to the current time
+        time_after_24_hours = current_time + timedelta(hours=24)
+
+        # Print the result
+        st.success(f"Scheduler is currently running. Next data processing is scheduled at: {time_after_24_hours.strftime('%Y-%m-%d %H:%M:%S')}")
+        # show_spinner()
     else:
         st.info("Scheduler is not running.")
 
@@ -82,12 +89,15 @@ def show_latest_date():
     )
 
 
-def preview_dataframe(df, date=None):
-    """Display a preview of the DataFrame."""
+def preview_dataframe(df, header, date=None):
+    if df is None:
+        st.success(f"Database is upto date. No updations required for this date.")
+        return None
+    
     st.markdown(
-        """
+        f"""
         <p style="font-size: 20px; font-weight: bold; color: #333;">
-            📊 Data Preview <span style="color: #4CAF50;">(First 5 Rows)</span>
+            📊 {header} <span style="color: #4CAF50;">(First 5 Rows)</span>
         </p>
         """,
         unsafe_allow_html=True,
@@ -105,6 +115,8 @@ def add_sales_data_to_db(file_name, sheet_name, date):
     """Add sales data to the database."""
     with st.spinner("Adding sales data to the database..."):
         add_sales_data(str(date), file_name, sheet_name)
+        st.session_state["toggle_status"] = True
+        manage_scheduler()
     st.success("Sales data has been successfully added to the database!")
     
 
@@ -159,17 +171,17 @@ def main():
     file_name = "AnomalyDetection -Automation.xlsx"
     sheet_name = "DATA-NEW-BM"
     df = pd.read_excel(file_name, sheet_name=sheet_name)
-    preview_dataframe(df, st.session_state['latest_date'])
+    preview_dataframe(df, "Raw Data Preview", st.session_state['latest_date'])
 
     # Button to add sales data
-    if st.button("Add Sales Data"):
+    if st.button("Process Raw Data"):
         add_sales_data_to_db(file_name, sheet_name, st.session_state["latest_date"])
 
     # Toggle switch for the scheduler
-    create_toggle_switch()
+    # create_toggle_switch()
 
     # Manage scheduler state
-    manage_scheduler()
+    # manage_scheduler()
 
     # Show the scheduler's status
     show_scheduler_status()
@@ -178,3 +190,8 @@ def main():
 if __name__ == "__main__":
     initialize_session_state()
     main()
+
+# raw data preview
+# processed data preview
+# remove the loader
+# processing the next data (data is processed at; next data process is scheduled at) 
