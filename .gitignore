@@ -1,2 +1,3 @@
 temp/
 .streamlit/
+__pycache__/
