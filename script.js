@@ -6,6 +6,12 @@ async function sendQuery() {
     // Get the spinner element
     const spinner = document.getElementById('loadingSpinner');
 
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.width = '100%'; // Simulate loading
+    setTimeout(() => {
+        progressBar.style.width = '0'; // Reset
+    }, 2000);
+
     // Validate input
     if (!query) {
         alert('Please enter a query before submitting.');
