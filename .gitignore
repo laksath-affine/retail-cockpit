@@ -1,3 +1,4 @@
 temp/
 .streamlit/
 __pycache__/
+static/

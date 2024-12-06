@@ -23,11 +23,17 @@ def generate_data():
 
     try:
         generated_data = [
-            {'description': description.split('Insights: ')[-1].split('\n')[0]}
+            {
+                'description': description.split('Insights: ')[-1].split('\n')[0],
+                "image_path": "/static/images/xYukB.png"  # Path to the local image
+            }
         ]
     except Exception as e:
         generated_data = [
-            {'description': 'No results found'}
+            {
+                'description': 'No results found',
+                "image_path": "/static/images/xYukB.png"  # Path to the local image
+            }
         ]
 
     return jsonify(generated_data)

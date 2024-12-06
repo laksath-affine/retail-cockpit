@@ -165,3 +165,29 @@ button:hover {
 .iphone-switch input:checked + .slider:before {
     transform: translateX(26px);
 }
+
+#imageContainer {
+    margin-top: 30px;
+    /* height: 50%;  50% of the parent container's height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#imageContainer img {
+    max-width: 100%; /* Ensure the image scales properly */
+    max-height: 100%; /* Ensure the image fits within its container */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* When the chatbot is off, the dashboard container takes full width */
+.full-width {
+    flex: 0 0 98%; /* Occupies the full width */
+}
+
+/* Hide the response container */
+.hidden {
+    display: none;
+}
