@@ -3,6 +3,9 @@ async function sendQuery() {
     // Get the input text
     const query = document.getElementById('textInput').value;
 
+    // Get the spinner element
+    const spinner = document.getElementById('loadingSpinner');
+
     // Validate input
     if (!query) {
         alert('Please enter a query before submitting.');
@@ -13,13 +16,16 @@ async function sendQuery() {
     const apiUrl = 'http://127.0.0.1:5000/generate_data';
 
     try {
+        // Show spinner before making the API call
+        spinner.style.display = 'block';
+
         // Send POST request to Flask API
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ query: query })
+            body: JSON.stringify({ query: query }),
         });
 
         // Handle the response
@@ -47,11 +53,14 @@ async function sendQuery() {
                 document.getElementById('apiResponse').textContent = 'No description available.';
             }
         } else {
-            alert(`Error: ${response.statusText}`);
+            document.getElementById('apiResponse').textContent = `Error: ${response.statusText}`;
         }
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to connect to the API. Please check if the Flask server is running.');
+    } finally {
+        // Hide spinner after the API call completes (success or failure)
+        spinner.style.display = 'none';
     }
 }
 

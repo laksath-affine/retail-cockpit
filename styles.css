@@ -191,3 +191,26 @@ button:hover {
 .hidden {
     display: none;
 }
+
+.spinner {
+    display: none;
+    margin-top: 20px; /* Add space between the spinner and the element above it */
+    margin-bottom: 20px; /* Optional: Add space below the spinner */
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
