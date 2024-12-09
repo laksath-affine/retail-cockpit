@@ -89,12 +89,15 @@ document.addEventListener('DOMContentLoaded', () => {
             submitButton.classList.remove('hidden');
             responseContainer.classList.remove('hidden');
             dashboardContainer.classList.remove('full-width'); // Restore original width
+            responseContainer.classList.add('chatbot-on');
         } else {
             // Chatbot is OFF
             formGroup.classList.add('hidden');
             submitButton.classList.add('hidden');
             responseContainer.classList.add('hidden');
             dashboardContainer.classList.add('full-width'); // Take full width
+            responseContainer.classList.remove('chatbot-on');
+
         }
     };
 
