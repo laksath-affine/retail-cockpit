@@ -1,42 +1,25 @@
-from flask import Flask, request, jsonify, send_file, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-import matplotlib.pyplot as plt
-from io import BytesIO
-from quin_insight import quin_description
-app = Flask(__name__)
-CORS(app)
+import requests
 
-@app.route('/')  # Root route to serve the HTML file
-def serve_html():
-    return send_from_directory('.', 'index.html')  # Replace 'index.html' with your actual HTML filename
+app = Flask(__name__)
+CORS(app)  # This adds the necessary CORS headers to responses
 
 @app.route('/generate_data', methods=['POST'])
-def generate_data():
+def proxy():
+    # Extract the query from the incoming JSON
     data = request.get_json()
     query = data.get('query')
-    if not query:
-        return jsonify({'error': 'No query provided'}), 400
 
-    _, description, _ = quin_description(query)
-    print(f"Received query: {query}")
-    print(f"Received query: {description}")
+    # Forward the request to the external API
+    api_url = 'https://chatbotquinhtml.azurewebsites.net/api/chatbotquinpbihtml'
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(api_url, json={'query': query}, headers=headers)
 
-    try:
-        generated_data = [
-            {
-                'description': description.split('Insights: ')[-1].split('\n')[0],
-                "image_path": "/static/images/xYukB.png"  # Path to the local image
-            }
-        ]
-    except Exception as e:
-        generated_data = [
-            {
-                'description': 'No results found',
-                "image_path": "/static/images/xYukB.png"  # Path to the local image
-            }
-        ]
-
-    return jsonify(generated_data)
+    # The external API returns HTML as a string
+    html_content = response.text
+    # print(html_content)
+    return html_content
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5000, debug=True)

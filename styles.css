@@ -112,7 +112,7 @@ input[type="text"] {
 
 /* Button Styling */
 button {
-    margin-top: auto; /* Ensures the button stays at the bottom */
+    margin-top: auto;
     padding: 12px;
     font-size: 16px;
     font-weight: bold;
@@ -213,6 +213,7 @@ button:hover {
 }
 
 .progress-bar {
+    margin-top: 5px;
     width: 0;
     height: 5px;
     background-color: #007bff;

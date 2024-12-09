@@ -1,28 +1,23 @@
-// Function to send a query to the Flask API
 async function sendQuery() {
-    // Get the input text
     const query = document.getElementById('textInput').value;
-
-    // Get the spinner element
+    // const progressBar = document.getElementById('progressBar');
     const spinner = document.getElementById('loadingSpinner');
 
-    const progressBar = document.getElementById('progressBar');
-    progressBar.style.width = '100%'; // Simulate loading
-    setTimeout(() => {
-        progressBar.style.width = '0'; // Reset
-    }, 2000);
+    // Simulate a loading progress bar
+    // progressBar.style.width = '100%';
+    // setTimeout(() => {
+    //     progressBar.style.width = '0';
+    // }, 2000);
 
-    // Validate input
     if (!query) {
         alert('Please enter a query before submitting.');
         return;
     }
 
-    // API endpoint URL
+    // The local Flask proxy endpoint that will forward requests to the external API
     const apiUrl = 'http://127.0.0.1:5000/generate_data';
 
     try {
-        // Show spinner before making the API call
         spinner.style.display = 'block';
 
         // Send POST request to Flask API
@@ -34,76 +29,59 @@ async function sendQuery() {
             body: JSON.stringify({ query: query }),
         });
 
-        // Handle the response
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Data received from API:', data);
-
-            // Check if the API response contains a description
-            if (data[0] && data[0].description) {
-                // Update the HTML content with the description
-                document.getElementById('apiResponse').textContent = data[0].description;
-
-                // Display the image if the API provides an image URL
-                if (data[0].image_path) {
-                    const imagePath = data[0].image_path;
-                    const imageContainer = document.getElementById('imageContainer');
-                    const responseImage = document.getElementById('responseImage');
-
-                    responseImage.src = imagePath; // Set the image source
-                    imageContainer.style.display = 'flex'; // Make the image container visible
-                } else {
-                    alert('No image available.');
-                }
-            } else {
-                document.getElementById('apiResponse').textContent = 'No description available.';
-            }
-        } else {
-            document.getElementById('apiResponse').textContent = `Error: ${response.statusText}`;
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error response from proxy:', errorText);
+            alert(`Error: ${response.statusText}`);
+            return;
         }
+
+        // Expecting an HTML string from the proxy
+        let htmlResponse = await response.text();
+        if (htmlResponse.startsWith('"') && htmlResponse.endsWith('"')) {
+            htmlResponse = htmlResponse.slice(1, -1);
+        }
+        htmlResponse = htmlResponse.replace(/\\n/g, '\n').replace(/\\"/g, '"');          
+        console.log('HTML Response received:', htmlResponse);
+
+        const responseIframe = document.getElementById('responseIframe');
+        responseIframe.srcdoc = htmlResponse;
+
     } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to connect to the API. Please check if the Flask server is running.');
+        console.error('Network or fetch error:', error);
+        alert('Failed to connect to the API. Please ensure the Flask server is running.');
     } finally {
-        // Hide spinner after the API call completes (success or failure)
         spinner.style.display = 'none';
     }
 }
 
-// Attach event listener to the Submit button
 document.getElementById('submitButton').addEventListener('click', sendQuery);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the toggle switch, form group, submit button, dashboard container, and response container
     const toggleSwitch = document.getElementById('toggleSwitch');
-    const formGroup = document.querySelector('.form-group'); // Parent of the textbox
+    const formGroup = document.querySelector('.form-group'); 
     const submitButton = document.getElementById('submitButton');
     const dashboardContainer = document.querySelector('.dashboard-container');
     const responseContainer = document.getElementById('responseContainer');
 
-    // Function to toggle visibility and adjust widths
     const toggleChatBotFeatures = () => {
         if (toggleSwitch.checked) {
             // Chatbot is ON
             formGroup.classList.remove('hidden');
             submitButton.classList.remove('hidden');
             responseContainer.classList.remove('hidden');
-            dashboardContainer.classList.remove('full-width'); // Restore original width
+            dashboardContainer.classList.remove('full-width');
             responseContainer.classList.add('chatbot-on');
         } else {
             // Chatbot is OFF
             formGroup.classList.add('hidden');
             submitButton.classList.add('hidden');
             responseContainer.classList.add('hidden');
-            dashboardContainer.classList.add('full-width'); // Take full width
+            dashboardContainer.classList.add('full-width');
             responseContainer.classList.remove('chatbot-on');
-
         }
     };
 
-    // Attach event listener to the toggle switch
     toggleSwitch.addEventListener('change', toggleChatBotFeatures);
-
-    // Initialize the state on page load
     toggleChatBotFeatures();
 });
