@@ -93,6 +93,7 @@ h1 {
 
 /* Form Group */
 .form-group {
+    height: 100%;
     margin-bottom: 15px;
 }
 
