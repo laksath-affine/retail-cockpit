@@ -1,17 +1,27 @@
 /* Base Styles */
-body {
-    font-family: Arial, sans-serif;
+
+html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
     background-color: #f4f4f9;
     color: #333;
 }
 
+/* body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+} */
+
 /* Container */
 .container {
-    width: 98%; /* Increased width to occupy almost the full screen */
-    max-width: 1800px; /* Increased maximum width for wider layouts */
-    margin: 12px auto;
+    height: 100%;
+    /* width: 100%; Increased width to occupy almost the full screen */
+    /* max-width: 1800px;  */
     background: #fff;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -27,6 +37,7 @@ h1 {
 
 /* Flexbox Row */
 .row {
+    height: 80%;
     display: flex;
     column-gap: 10px;
     margin-bottom: 12px;
@@ -86,7 +97,7 @@ h1 {
 
 .dashboard-container iframe {
     width: 100%;
-    height: 600px;
+    height: 100%;
     border: none;
     border-radius: 5px;
 }
