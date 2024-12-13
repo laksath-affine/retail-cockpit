@@ -6,3 +6,5 @@ schedule
 random2
 pyodbc==5.2.0
 openpyxl
+Flask
+requests
